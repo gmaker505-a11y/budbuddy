@@ -82,3 +82,15 @@ test('important interface elements exist and all care buttons have unique action
   expect(actionNames).toEqual(['feed', 'water', 'pet', 'play', 'nap', 'talk']);
   expect(new Set(actionNames).size).toBe(actionNames.length);
 });
+
+test('exploration discovers habitat secrets and progress survives reload', async ({ page }) => {
+  await page.goto('/');
+  const before = Number((await page.locator('#discoveryCount').textContent()).match(/(\d+) \/ 6/)[1]);
+  await page.getByRole('button', { name: /Explore the habitat/i }).click();
+  await expect(page.locator('#exploreText')).not.toContainText('Go explore and see what you find');
+  const after = Number((await page.locator('#discoveryCount').textContent()).match(/(\d+) \/ 6/)[1]);
+  expect(after).toBeGreaterThanOrEqual(before);
+  expect(after).toBeLessThanOrEqual(6);
+  await page.reload();
+  await expect(page.locator('#discoveryCount')).toContainText(String(after));
+});
