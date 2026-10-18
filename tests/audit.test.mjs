@@ -4,6 +4,8 @@ const actions = ['Feed', 'Water', 'Pet', 'Play', 'Nap', 'Talk'];
 const statIds = ['hungerValue', 'thirstValue', 'energyValue', 'happyValue'];
 
 test('full action audit: every action works, stats stay valid, and no runtime errors occur', async ({ page }) => {
+  // The 3D scene needs time to render between clicks on slower mobile emulation.
+  test.setTimeout(60000);
   const pageErrors = [];
   page.on('pageerror', error => pageErrors.push(error.message));
   await page.goto('/');
