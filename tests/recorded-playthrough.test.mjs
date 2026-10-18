@@ -83,8 +83,12 @@ test('recorded playthrough: inspect screens, care actions, exploration, shop and
   // the empty-wallet state instead of silently skipping a visible feature.
   const treat = page.getByRole('button', { name: /Buy a tiny treat/i });
   const treatWasDisabled = await treat.isDisabled();
-  await treat.click();
-  evidence.actions.push({ action: 'Buy a tiny treat', wasDisabled: treatWasDisabled, result: await page.locator('#exploreText').textContent() });
+  if (treatWasDisabled) {
+    evidence.actions.push({ action: 'Buy a tiny treat', wasDisabled: true, result: 'Shop correctly disabled because fewer than 5 seeds are available.' });
+  } else {
+    await treat.click();
+    evidence.actions.push({ action: 'Buy a tiny treat', wasDisabled: false, result: await page.locator('#exploreText').textContent() });
+  }
   await snapshot('09-treat-shop-result');
 
   const beforeReload = await page.locator('#discoveryCount').textContent();
