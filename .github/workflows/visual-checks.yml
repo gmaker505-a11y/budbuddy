@@ -20,7 +20,7 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Run gameplay and responsive tests
         run: npm test
-      - name: Upload mobile and desktop screenshots, traces and report
+      - name: Upload playthrough recordings, screenshots, traces and report
         if: always()
         uses: actions/upload-artifact@v4
         with:
