@@ -15,7 +15,7 @@
 <div class="explore-card"><h2>🧭 Little adventures</h2><p id="exploreText">The habitat has hidden corners. Go explore and see what you find.</p><button class="explore-button" id="exploreButton">Explore the habitat</button><button class="treat-button" id="treatButton">🍓 Buy a tiny treat · 5 seeds</button><div class="discoveries" id="discoveryCount">🔎 Discoveries: 0 / 6</div></div>
 <div class="bottomrow"><span id="bondText">💚 Bond: 0 · Level 1</span><button class="secondary" id="resetButton">Reset game</button></div><div class="log"><h2>🪴 Buddy's diary</h2><p id="diary">BudBuddy moved into his new habitat. He's sizing you up.</p><p id="saveStatus">Progress saves on this device.</p></div></aside><div class="footer">A tiny world, one very stoned-looking hamster. Progress stays in this browser.</div></main>
 <script type="module">
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
 const $=id=>document.getElementById(id),defaults=()=>({hunger:82,thirst:82,energy:82,happy:82,bond:0,seeds:0,day:1,actions:0,discoveries:[],diary:"BudBuddy moved into his new habitat. He's sizing you up."});
 function load(){try{return {...defaults(),...(JSON.parse(localStorage.getItem('budbuddy-save'))||{})}}catch{return defaults()}}let s=load(),scene,camera,renderer,root,head,clock,lastTick=Date.now(),motion=0,yaw=0,pitch=.12,zoom=6.8,drag=null,wheelMesh,eyeMeshes=[],dustMotes=[];
 function save(){try{localStorage.setItem('budbuddy-save',JSON.stringify(s));$('saveStatus').textContent='✓ Saved on this device'}catch{$('saveStatus').textContent='Local saving unavailable'}}
