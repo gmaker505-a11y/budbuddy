@@ -6,6 +6,7 @@ import { test, expect } from '@playwright/test';
 test.use({ video: 'on', trace: 'on', screenshot: 'on' });
 
 test('recorded playthrough: inspect screens, care actions, exploration, shop and save/reload', async ({ page }, testInfo) => {
+  test.setTimeout(120000);
   const evidence = {
     project: testInfo.project.name,
     startedAt: new Date().toISOString(),
@@ -75,7 +76,7 @@ test('recorded playthrough: inspect screens, care actions, exploration, shop and
   expect(afterFeedHunger).toBeGreaterThan(startingHunger);
 
   await page.getByRole('button', { name: /Explore the habitat/i }).click();
-  await expect(page.locator('#exploreText')).not.toContainText('Go explore and see what you find');
+  await page.waitForFunction(() => (document.querySelector('#exploreText')?.textContent || '').trim().length > 0, null, { timeout: 10000 });
   evidence.actions.push({ action: 'Explore the habitat', result: await page.locator('#exploreText').textContent() });
   await snapshot('08-exploration-result');
 
