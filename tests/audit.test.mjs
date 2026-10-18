@@ -27,7 +27,6 @@ test('full action audit: every action works, stats stay valid, and no runtime er
 test('reset asks for confirmation and resets the saved game when confirmed', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: /Feed/i }).click();
-  await page.evaluate(() => { window.__confirmResult = true; });
   page.on('dialog', dialog => dialog.accept());
   await page.getByRole('button', { name: /Reset game/i }).click();
   await expect(page.locator('#hungerValue')).toHaveText('82%');
@@ -35,13 +34,13 @@ test('reset asks for confirmation and resets the saved game when confirmed', asy
   await expect(page.locator('#hungerValue')).toHaveText('82%');
 });
 
-test('keyboard navigation reaches care actions and controls have accessible names', async ({ page }) => {
+test('care actions and important controls expose accessible names', async ({ page }) => {
   await page.goto('/');
   for (const action of actions) {
     const button = page.getByRole('button', { name: new RegExp(action, 'i') });
-    await expect(button).toHaveAccessibleName();
+    await expect(button).toHaveAccessibleName(new RegExp(action, 'i'));
   }
-  await expect(page.getByRole('button', { name: /Reset game/i })).toHaveAccessibleName();
+  await expect(page.getByRole('button', { name: /Reset game/i })).toHaveAccessibleName(/Reset game/i);
   await expect(page.locator('#world')).toHaveAttribute('aria-label', /3D view/i);
   await expect(page.locator('#speech')).toHaveAttribute('aria-live', 'polite');
 });
